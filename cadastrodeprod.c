@@ -13,14 +13,13 @@ typedef struct {
 Produto produtos[MAXprducts];
 int totalProdutos = 0;
 
-
 void produtoarq(Produto p){
     FILE *arq2 = fopen("produtos.txt", "a");
     if (arq2 == NULL){
         printf("erro ao abrir arquivo\n");
     }
 
-    fprintf(arq2, " %s | %fR$ | %fKg \n", p.nome, p.precoKg, p.totalKg);
+    fprintf(arq2, "| Nome: %s | Preço: R$%f | Total: %fKg |\n", p.nome, p.precoKg, p.totalKg);
 
     fclose(arq2);
 }
@@ -50,27 +49,9 @@ void cadastrarProduto() {
     printf("\nProduto cadastrado com sucesso!\n\n");
 }
 
-/*void exibirProdutos() {
-    printf("\nLista de Produtos Cadastrados:\n");
-    for (int i = 0; i < totalProdutos; i++) {
-        Produto p = produtos[i];
-        printf("Nome: %s\nPreco/Kg: R$ %.2f\nTotal do Produto/Kg: %.2f\n\n",p.nome, p.precoKg, p.TotalKg);
-
-    }
-}*/
-
-/*void calcularMargem() {
-    for (int i = 0; i < totalProdutos; i++) {
-        Produto p = produtos[i];
-        float margem = ((p.precoVenda - p.precoCusto) / p.precoCusto) * 100;
-        printf("Produto: %s | Margem: %.2f%%\n", p.nome, margem);
-    }
-}*/
-
 void limparTela(){
     printf("\e[1;1H\e[2J");
 }
-
 
 int main(){
     int opcao;
