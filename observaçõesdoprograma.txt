@@ -1,0 +1,11 @@
+#Programa PDV Hortfruti 
+
+Problemas a serem resolvidos:
+
+- Erro no login de acesso, usuários reconhecidos e não reconhecidos -> adm/funcio;
+- Erro no momento do arquivo de produtos na troca de usuário;
+
+Possíveis Atualizações:
+
+- Limitar adm's do sistema;
+- Programa reconhecer se nome+senha de usuários já existentes e pedir novamente o cadastro; 
