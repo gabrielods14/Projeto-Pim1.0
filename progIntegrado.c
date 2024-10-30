@@ -1,6 +1,6 @@
-#include <stdio.h> // para usar printf e scanf
-#include <stdlib.h> // funções utilitárias, como alocação de memória
-#include <string.h> // para manipulação de strings, como comparação
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX_PRODUTOS 100
 #define ARQUIVO "produtos.txt"
@@ -9,80 +9,66 @@
 int contadorVendas = 0; // Contador global de vendas
 int contadorDias = 1;   // Contador global de dias
 
-// Função para limpar a tela
+struct Usuario { 
+    char nomeUs[50]; 
+    char senha[50]; 
+    char funcionario; 
+};
+
 void limparTela() {
-    // Limpa a tela dependendo do sistema operacional
     #ifdef _WIN32
-        system("cls");  // Windows
+        system("cls");
     #else
-        system("clear"); // Linux e macOS
+        system("clear");
     #endif
 }
 
-struct Usuario{ // estrutura de cadastro do usuario
-    char nomeUs[50]; 
-    char senha[50]; 
-    char funcionario; // determinada com S/N se é funcionario ou administrador
-};
-
 void cadastrarUsuario() {
-    FILE *arquivo = fopen("Usuario.txt", "a"); // abrir o arquivo para adicionar
+    FILE *arquivo = fopen("Usuario.txt", "a");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo!\n");
         return;
     }
 
     struct Usuario usuario;
-    
     printf("Digite o nome do usuario: ");
-    scanf("%49s", usuario.nomeUs); // %49 Evita overflow da string
-
+    scanf("%49s", usuario.nomeUs);
     printf("Digite a senha do usuario: ");
     scanf("%49s", usuario.senha);
-    while (getchar() != '\n');  // Limpa o buffer
+    getchar();
 
     printf("O usuario e funcionario? [S/N] ");
     scanf(" %c", &usuario.funcionario);
-
-
     if (usuario.funcionario == 'S' || usuario.funcionario == 's' ) {
         printf("Cadastro de usuario do tipo funcionario concluido\n");
-    }
-    else if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
+    } else if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
         printf("Cadastro de usuario do tipo administrador concluido\n");
-    }
-    else {
+    } else {
         printf("Opção invalida\n");
-        fclose(arquivo); // Fecha arquivo para não salvar
-        return;  // Interrompe a função sem salvar nada
+        fclose(arquivo);
+        return;
     }
-
-    // Salvando as informações no arquivo txt
     fprintf(arquivo, "%s %s %c\n", usuario.nomeUs, usuario.senha, usuario.funcionario); 
     fclose(arquivo);
-
     printf("Cadastro salvo com sucesso!\n");
 }
 
-// Função que verifica se o nome e senha são válidos
 int verificarUsuario(char *nome, char *senha) {
-    FILE *arquivo = fopen("Usuario.txt", "r"); // abrir o arquivo para leitura, 'r'
+    FILE *arquivo = fopen("Usuario.txt", "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo!\n");
-        return 0;
+        return -1;
     }
 
     struct Usuario usuario;
-    // Lê o arquivo linha por linha
-    while (fscanf(arquivo, "%s %s", usuario.nomeUs, usuario.senha) != EOF) {
-        // Verifica se o usuário e a senha correspondem
+    while (fscanf(arquivo, "%s %s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
         if (strcmp(usuario.nomeUs, nome) == 0 && strcmp(usuario.senha, senha) == 0) {
             fclose(arquivo);
-            return 1; // Usuário encontrado
+            return 1; 
         }
     }
     fclose(arquivo);
-    return 0; // Usuário não encontrado
+    return 0;
 }
 
 int fazerLogin(char *nomeUsuario) { //funcao de fazer login, inicio do programa
@@ -103,6 +89,7 @@ int fazerLogin(char *nomeUsuario) { //funcao de fazer login, inicio do programa
         }
     }
     senhaUsuario[i] = '\0'; // Termina a string
+
     limparTela();
 
     // Validando o login admin para primeiro acesso 
@@ -116,7 +103,6 @@ int fazerLogin(char *nomeUsuario) { //funcao de fazer login, inicio do programa
     }
 }
 
-
 int verificarPermissao(char *nomeUsuario) {
     if (strcmp(nomeUsuario, "admin") == 0) {
         printf("\nbem-vindo admin!\n\n");
@@ -126,11 +112,11 @@ int verificarPermissao(char *nomeUsuario) {
     FILE *arquivo = fopen("Usuario.txt", "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo!\n");
-        return -1;
+        return 0;
     }
 
     struct Usuario usuario;
-    while (fscanf(arquivo, "%49s %49s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
+    while (fscanf(arquivo, "%s %s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
         if (strcmp(usuario.nomeUs, nomeUsuario) == 0) {
             fclose(arquivo);
             // Retorna 1 para administrador e 2 para funcionário
@@ -158,36 +144,36 @@ struct Produto {
 
 // Função para salvar os produtos no arquivo
 void salvarProdutos(struct Produto produtos[], int contador) {
-    FILE *file = fopen(ARQUIVO, "w");
-    if (file == NULL) {
+    FILE *arquivo = fopen(ARQUIVO, "w");
+    if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo para escrita.\n");
         return;
     }
 
     for (int i = 0; i < contador; i++) {
-        fprintf(file, "ID:%d | Nome:%s | Preco por Kg: R$%.2f | Quantidade: %.2f Kg\n",
+        fprintf(arquivo, "ID:%d | Nome:%s | Preco por Kg: R$%.2f | Quantidade: %.2f Kg\n",
                 produtos[i].id, produtos[i].nome, produtos[i].preco, produtos[i].quantidade);
     }
 
-    fclose(file);
+    fclose(arquivo);
 }
 
 // Função para carregar os produtos do arquivo
 int carregarProdutos(struct Produto produtos[]) {
-    FILE *file = fopen(ARQUIVO, "w");
-    if (file == NULL) {
+    FILE *arquivo = fopen(ARQUIVO, "w");
+    if (arquivo == NULL) {
         printf("Arquivo não encontrado. Criando um novo...\n");
         return 0;
     }
 
     int contador = 0;
-    while (fscanf(file, "ID:%d | Nome:%s | Preco por Kg: R$%f | Quantidade: %f Kg\n",
+    while (fscanf(arquivo, "ID:%d | Nome:%s | Preco por Kg: R$%f | Quantidade: %f Kg\n",
                   &produtos[contador].id, produtos[contador].nome,
                   &produtos[contador].preco, &produtos[contador].quantidade) == 4) {
         contador++;
     }
 
-    fclose(file);
+    fclose(arquivo);
     return contador;
 }
 
@@ -340,6 +326,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
                 }
             } else if (quantidadeVenda <= 0) {
                 printf("A quantidade deve ser maior que zero.\n\n");
+                break;
             } else {
                 printf("Estoque insuficiente para o produto %s. Disponivel: %.2f Kg\n\n", produto->nome, produto->quantidade);
             }
@@ -353,9 +340,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
     printf("Total a pagar: R$%.2f\n\n", total);
 
     // Verificação se o total é igual a zero
-    while (total == 0) {
+    if (total == 0) {
         printf("O valor total não pode ser cobrado pois e igual a zero.\n");
-        break;
+        return;
     }
 
     // Adicionando opções de pagamento
@@ -367,6 +354,11 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
     printf("Escolha uma opcao: ");
     scanf("%d", &metodoPagamento);
 
+    while (metodoPagamento < 1 || metodoPagamento > 3) {
+        printf("Opcao invalida. Tente novamente: ");
+        scanf("%d", &metodoPagamento);
+    }
+    
     // Variável para a confirmação de pagamento
     char pagamentoAprovado;
 
@@ -379,7 +371,12 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         printf("Escolha uma opcao: ");
         scanf("%d", &tipoCartao);
 
-        // Perguntar se o pagamento foi aprovado
+        while (tipoCartao < 1 || tipoCartao > 3) {
+        printf("Opcao invalida. Tente novamente: ");
+        scanf("%d", &tipoCartao);
+        }
+
+        
         printf("O pagamento foi aprovado? (s/n): ");
         scanf(" %c", &pagamentoAprovado);
 
@@ -460,7 +457,7 @@ int main() {
 
     // Tentar fazer login 
     if (!fazerLogin(nomeUsuario)) {
-        return 1; // Encerra o programa se o login falhar
+        return 0; // Encerra o programa se o login falhar
     }
 
     int permissao = verificarPermissao(nomeUsuario);
