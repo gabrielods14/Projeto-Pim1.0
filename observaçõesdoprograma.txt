@@ -1,11 +1,10 @@
 #Programa PDV Hortfruti 
 
 Problemas a serem resolvidos:
-
-- Erro no login de acesso, usuários reconhecidos e não reconhecidos -> adm/funcio;
-- Erro no momento do arquivo de produtos na troca de usuário;
+- Estrutura visual e lógica da notinha fiscal;
+- Margem do produto;
 
 Possíveis Atualizações:
 
-- Limitar adm's do sistema;
-- Programa reconhecer se nome+senha de usuários já existentes e pedir novamente o cadastro; 
+- Limitar adm's do sistema?;
+- Eliminações de operações que envolvam "->";

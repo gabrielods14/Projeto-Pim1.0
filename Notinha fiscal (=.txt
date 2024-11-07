@@ -1,0 +1,61 @@
+
+
+    printf("|=======================================|\n");
+    printf("|              PEDIDO                   | \n");
+    printf("|=======================================|\n");
+    printf("|             HORTIFRUTI                |\n");
+    printf("|---------------------------------------|\n");
+    printf("|VENDEDOR :  %s                         |\n", var do Usuário);
+    printf("|=======================================|\n");
+    printf("|ID   NOME            Qtd  R$/Kg  Total |\n"); 
+    printf("|=======================================|\n"); 
+    *Laço para produtos
+    printf("|%d    %s             %.2f  %.2f   %.2f |\n", var id, nome, qtd, preco, total);
+    *
+    printf("|=======================================|\n");  
+    printf("|01 ITEM                           %.2f |\n");
+    printf("|=======================================|\n"); 
+    printf("|        DINHEIRO :                %.2f |\n");
+    printf("|                   --------------------|\n");    
+    printf("|                                       |\n");
+    printf("|---------------------------------------|\n");
+    printf("|Obrigado pela preferencia.             |\n");
+    printf("|=======================================|\n");
+
+
+adaptação do chat: 
+
+void imprimirNotaFiscal(char vendedor[], Produto produtos[], int numProdutos, float pagamento) {
+    float totalGeral = 0.0;
+
+    printf("|=======================================|\n");
+    printf("|              PEDIDO                   |\n");
+    printf("|=======================================|\n");
+    printf("|             HORTIFRUTI                |\n");
+    printf("|---------------------------------------|\n");
+    printf("|VENDEDOR :  %-25s|\n", vendedor);
+    printf("|=======================================|\n");
+    printf("|ID   NOME            Qtd  R$/Kg  Total |\n"); 
+    printf("|=======================================|\n"); 
+
+    // Laço para listar os produtos
+    for (int i = 0; i < numProdutos; i++) {
+        printf("|%-4d %-15s %.2f  %.2f   %.2f |\n", 
+            produtos[i].id, 
+            produtos[i].nome, 
+            produtos[i].quantidade, 
+            produtos[i].precoPorKg, 
+            produtos[i].total);
+        totalGeral += produtos[i].total;
+    }
+
+    printf("|=======================================|\n");  
+    printf("|%02d ITEM(S)                    %.2f |\n", numProdutos, totalGeral);
+    printf("|=======================================|\n"); 
+    printf("|        DINHEIRO :                %.2f |\n", pagamento);
+    printf("|                   --------------------|\n");    
+    printf("|                                       |\n");
+    printf("|---------------------------------------|\n");
+    printf("|Obrigado pela preferencia.             |\n");
+    printf("|=======================================|\n"); 
+}

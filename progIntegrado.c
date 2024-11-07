@@ -23,7 +23,29 @@ void limparTela() {
     #endif
 }
 
-void cadastrarUsuario() {
+int senhaExistente(char *senha) {
+    FILE *arquivo = fopen("Usuario.txt", "r");
+    if (arquivo == NULL) {
+        return 0; // Arquivo não encontrado, então nenhuma senha existe ainda
+    }
+
+    struct Usuario usuario;
+    while (fscanf(arquivo, "%s %s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
+        if (strcmp(usuario.senha, senha) == 0) {
+            fclose(arquivo);
+            return 1; // Senha ja existe
+        }
+    }
+    fclose(arquivo);
+    return 0; // Senha não existe
+}
+
+void cadastrarUsuario() {    
+    limparTela();
+    
+    int j = 0;
+    char cr;
+    
     FILE *arquivo = fopen("Usuario.txt", "a");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo!\n");
@@ -33,24 +55,60 @@ void cadastrarUsuario() {
     struct Usuario usuario;
     printf("Digite o nome do usuario: ");
     scanf("%49s", usuario.nomeUs);
-    printf("Digite a senha do usuario: ");
-    scanf("%49s", usuario.senha);
-    getchar();
+    
+    do {   
+        printf("Digite a senha do usuario: ");
+    
+        while ((cr = getch()) != '\r') { // '\r' é o Enter
+            if (cr == '\b') { // '\b' é o Backspace
+                if (j > 0) {
+                    j--;
+                    printf("\b \b"); // Apaga o último caractere
+                }
+            } else if (j < 49){ // evita overflow 
+                usuario.senha[j++] = cr; // Preenche senha
+                printf("*"); // Exibe um asterisco
+            }
+        }
+        usuario.senha[j] = '\0'; // Termina a string
 
-    printf("O usuario e funcionario? [S/N] ");
+
+        if (senhaExistente(usuario.senha)) { 
+            // 20/       --------------------
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Senha ja existente!!! Digite uma senha diferente.");
+            printf("\n-----------------------------------------------------------\n\n");                
+        } else {
+            break;
+        }
+    } while (1);
+
+    
+
+    printf("\nO usuario e administrador? [S/N] ");
     scanf(" %c", &usuario.funcionario);
+    limparTela();
+
     if (usuario.funcionario == 'S' || usuario.funcionario == 's' ) {
-        printf("Cadastro de usuario do tipo funcionario concluido\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Cadastro de usuario do tipo administrador concluido.");
+        printf("\n-----------------------------------------------------------\n\n");
     } else if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
-        printf("Cadastro de usuario do tipo administrador concluido\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Cadastro de usuario do tipo funcionario concluido.");
+        printf("\n-----------------------------------------------------------\n\n");
     } else {
-        printf("Opção invalida\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Opcao invalida!");
+        printf("\n-----------------------------------------------------------\n\n");
         fclose(arquivo);
         return;
     }
     fprintf(arquivo, "%s %s %c\n", usuario.nomeUs, usuario.senha, usuario.funcionario); 
     fclose(arquivo);
-    printf("Cadastro salvo com sucesso!\n");
+    printf("\n-----------------------------------------------------------\n");
+    printf("*Cadastro salvo com sucesso!");
+    printf("\n-----------------------------------------------------------\n\n");
 }
 
 int verificarUsuario(char *nome, char *senha) {
@@ -76,7 +134,7 @@ int fazerLogin(char *nomeUsuario) { //funcao de fazer login, inicio do programa
     int i = 0;
     char ch;
     printf("Digite a senha do usuario: ");
-    
+
     while ((ch = getch()) != '\r') { // '\r' é o Enter
         if (ch == '\b') { // '\b' é o Backspace
             if (i > 0) {
@@ -98,14 +156,16 @@ int fazerLogin(char *nomeUsuario) { //funcao de fazer login, inicio do programa
     } else if (verificarUsuario(nomeUsuario, senhaUsuario)) {
         return 1;
     }else {
-        printf("\nAcesso Negado.\nLogin ou senha incorretos.\n\n"); 
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Acesso Negado. Nome ou senha de usuario incorretos."); 
+        printf("\n-----------------------------------------------------------\n\n");
         return 0; // Falha no login
     }
 }
 
 int verificarPermissao(char *nomeUsuario) {
     if (strcmp(nomeUsuario, "admin") == 0) {
-        printf("\nbem-vindo admin!\n\n");
+        printf("\nbem-vindo admin!\n");
         return 1; // Admin tem acesso total (menu de administrador)
     }
 
@@ -120,11 +180,11 @@ int verificarPermissao(char *nomeUsuario) {
         if (strcmp(usuario.nomeUs, nomeUsuario) == 0) {
             fclose(arquivo);
             // Retorna 1 para administrador e 2 para funcionário
-            if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
-                printf("\nbem-vindo admin!\n\n");
+            if (usuario.funcionario == 'S' || usuario.funcionario == 's') {
+                printf("\nbem-vindo admin!\n");
                 return 1; // administrador
-            } else if (usuario.funcionario == 'S' || usuario.funcionario == 's') {
-                printf("\nbem-vindo!\n\n");
+            } else if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
+                printf("\nbem-vindo!\n");
                 return 2; // funcionário
             }
         }
@@ -160,9 +220,11 @@ void salvarProdutos(struct Produto produtos[], int contador) {
 
 // Função para carregar os produtos do arquivo
 int carregarProdutos(struct Produto produtos[]) {
-    FILE *arquivo = fopen(ARQUIVO, "w");
+    FILE *arquivo = fopen(ARQUIVO, "r");
     if (arquivo == NULL) {
-        printf("Arquivo não encontrado. Criando um novo...\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Nenhum Produto Cadastrado");
+        printf("\n-----------------------------------------------------------\n");
         return 0;
     }
 
@@ -179,8 +241,12 @@ int carregarProdutos(struct Produto produtos[]) {
 
 // Função para cadastrar um novo produto ou apenas atualizar a quantidade
 void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualizacao, int idProdutoAtualizar) {
+    limparTela();
+    
     if (modoAtualizacao == 0 && *contador >= MAX_PRODUTOS) {
-        printf("Limite de produtos cadastrados atingido.\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Limite de produtos cadastrados atingido.");
+        printf("\n-----------------------------------------------------------\n\n");
         return;
     }
 
@@ -190,21 +256,25 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
         printf("Atualizando quantidade do produto %s (ID %d)\n", novoProduto.nome, novoProduto.id);
     } else {
         novoProduto.id = *contador + 1; // Define a posição no estoque com base no contador atual
-        printf("Nome do produto: ");
+        printf("\nNome do produto: ");
         getchar(); // Para consumir o caractere de nova linha deixado pelo scanf anterior
         fgets(novoProduto.nome, sizeof(novoProduto.nome), stdin);
         novoProduto.nome[strcspn(novoProduto.nome, "\n")] = 0; // Remove a nova linha
 
         printf("Preco do produto por Kg: ");
         if (scanf("%f", &novoProduto.preco) != 1) {
-            printf("Entrada invalida para preco!\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Entrada invalida para preco!");
+            printf("\n-----------------------------------------------------------\n\n");
             return;
         }
     }
 
     printf("Quantidade no estoque (Kg): ");
     if (scanf("%f", &novoProduto.quantidade) != 1) { // Alterado para float
-        printf("Entrada invalida para quantidade!\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Entrada invalida para quantidade!");
+        printf("\n-----------------------------------------------------------\n\n");
         return;
     }
 
@@ -215,7 +285,9 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
         (*contador)++;
     }
 
-    printf("Produto atualizado com sucesso!\n\n");
+    printf("\n-----------------------------------------------------------\n");
+    printf("*Produto atualizado com sucesso!");
+    printf("\n-----------------------------------------------------------\n\n");
 
     // Salva os produtos no arquivo
     salvarProdutos(produtos, *contador);
@@ -223,15 +295,20 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
 
 // Função para listar todos os produtos cadastrados
 void listarProdutos(struct Produto produtos[], int contador) {
+    limparTela();
     if (contador == 0) {
-        printf("Nenhum produto cadastrado.\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Nenhum produto cadastrado.");
+        printf("\n-----------------------------------------------------------\n\n");
         return;
     }
 
-    printf("Lista de produtos cadastrados:\n");
+    printf("\nLista de produtos cadastrados:\n");
     for (int i = 0; i < contador; i++) {
-        printf("ID: %d | Nome: %s | Preco por Kg: R$ %.2f | Quantidade: %.2f Kg\n",
+        printf("\n---------------------------------------------------------------------\n");
+        printf("ID: %d | Nome: %s | Preco por Kg: R$ %.2f | Quantidade: %.2f Kg",
                produtos[i].id, produtos[i].nome, produtos[i].preco, produtos[i].quantidade);
+        printf("\n---------------------------------------------------------------------\n");
     }
 }
 
@@ -250,25 +327,62 @@ void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeV
     char arquivoVendas[50];
     sprintf(arquivoVendas, "vendas_dia_%d.txt", dia); // Cria nome do arquivo para o dia específico
 
-    FILE *file = fopen(arquivoVendas, "a");
-    if (file == NULL) {
+    FILE *arquivo = fopen(arquivoVendas, "a");
+    if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo de vendas.\n");
         return;
     }
 
-    fprintf(file, "Produto: %s| Preco com margem: R$%.2f | Quantidade vendida: %.2f Kg\n", nomeProduto, precoFinal, quantidadeVendida);
-    fclose(file);
+    fprintf(arquivo, "Produto: %s| Preco com margem: R$%.2f | Quantidade vendida: %.2f Kg\n", nomeProduto, precoFinal, quantidadeVendida);
+    fclose(arquivo);
 }
 
 // Função para finalizar o dia e salvar as vendas
 void finalizarDia() {
+    limparTela();
+    printf("\n-----------------------------------------------------------\n");
     printf("Finalizando o dia %d...\n", contadorDias);
-    contadorDias; // Avança para o próximo dia
-    printf("Dia %d finalizado com sucesso!\n", contadorDias++);
+    printf("Dia %d finalizado com sucesso!\n", contadorDias);
+    printf("\n-----------------------------------------------------------\n\n");
+    contadorDias++;
 }
 
+void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float pagamento) {
+
+printf("                                                             ===============================================\n");
+printf("                                                            |                    PEDIDO                     |\n");
+printf("                                                            |-----------------------------------------------|\n");
+printf("                                                            |                  HORTIFRUTI                   |\n");
+printf("                                                            |                                               |\n");
+printf("                                                            |-----------------------------------------------|\n");
+printf("                                                            | VENDEDOR :  %-12s                      |\n", vendedor);
+printf("                                                            |===============================================|\n");
+printf("                                                            | ID   NOME            Qtd    R$/Kg      Total  |\n"); 
+printf("                                                            |===============================================|\n"); 
+
+// Laço para listar os produtos
+for (int i = 0; i < numProdutos; i++) {
+    printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-8.2f |\n", produtos[i].id, produtos[i].nome, produtos[i].quantidade, produtos[i].preco, pagamento);
+}
+
+printf("                                                            |===============================================|\n");  
+printf("                                                            | %02d ITEM(S)                          %.2f      |\n", numProdutos, pagamento);
+printf("                                                            |===============================================|\n"); 
+printf("                                                            |                   DINHEIRO :         %.2f     |\n", pagamento);
+printf("                                                            |                             ------------------|\n");    
+printf("                                                            |                                               |\n");
+printf("                                                            |-----------------------------------------------|\n");
+printf("                                                            | Obrigado pela preferencia.                    |\n");
+printf("                                                             =============================================== \n\n\n"); 
+
+}
+
+
+
 // Função para realizar a venda com opções de pagamento
-void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
+void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, char vendedor[]) {
+    limparTela();
+    
     int idProduto;
     float quantidadeVenda;
     float total = 0.0;
@@ -295,7 +409,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         if (produto != NULL) {
             printf("Quantidade a vender (Kg): ");
             if (scanf("%f", &quantidadeVenda) != 1) {
-                printf("Entrada invalida para quantidade!\n");
+                printf("\n-----------------------------------------------------------\n");
+                printf("*Entrada invalida para quantidade!");
+                printf("\n-----------------------------------------------------------\n\n");
                 continue;
             }
 
@@ -318,20 +434,28 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
                 // Verificar se o estoque zerou e perguntar se deseja atualizar
                 if (produto->quantidade == 0) {
                     char resposta;
-                    printf("O estoque do produto %s acabou. Deseja repor? (s/n): ", produto->nome);
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*O estoque do produto %s acabou. Deseja repor? (s/n): ", produto->nome);
                     scanf(" %c", &resposta);
+                    printf("\n-----------------------------------------------------------\n\n");
                     if (resposta == 's' || resposta == 'S') {
                         cadastrarProduto(produtos, contador, 1, produto->id - 1);
                     }
                 }
             } else if (quantidadeVenda <= 0) {
-                printf("A quantidade deve ser maior que zero.\n\n");
+                printf("\n-----------------------------------------------------------\n");
+                printf("*A quantidade deve ser maior que zero.");
+                printf("\n-----------------------------------------------------------\n\n");
                 break;
             } else {
-                printf("Estoque insuficiente para o produto %s. Disponivel: %.2f Kg\n\n", produto->nome, produto->quantidade);
+                printf("\n-----------------------------------------------------------\n");
+                printf("*Estoque insuficiente para o produto %s. Disponivel: %.2f Kg\n\n", produto->nome, produto->quantidade);
+                printf("\n-----------------------------------------------------------\n\n");
             }
         } else {
-            printf("Produto com ID %d nao encontrado.\n\n", idProduto);
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Produto com ID %d nao encontrado.\n\n", idProduto);
+            printf("\n-----------------------------------------------------------\n\n");
         }
 
         printf("Digite o ID do proximo produto (0 para finalizar): ");
@@ -341,9 +465,13 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
 
     // Verificação se o total é igual a zero
     if (total == 0) {
-        printf("O valor total não pode ser cobrado pois e igual a zero.\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*O valor total nao pode ser cobrado pois e igual a zero.\n");
+        printf("\n-----------------------------------------------------------\n\n");
         return;
     }
+    
+    imprimirNotaFiscal(vendedor, vendasTemp, vendasTempCount, total);
 
     // Adicionando opções de pagamento
     int metodoPagamento;
@@ -355,8 +483,10 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
     scanf("%d", &metodoPagamento);
 
     while (metodoPagamento < 1 || metodoPagamento > 3) {
-        printf("Opcao invalida. Tente novamente: ");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Opcao invalida. Tente novamente: ");
         scanf("%d", &metodoPagamento);
+        printf("\n-----------------------------------------------------------\n\n");
     }
     
     // Variável para a confirmação de pagamento
@@ -372,8 +502,10 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         scanf("%d", &tipoCartao);
 
         while (tipoCartao < 1 || tipoCartao > 3) {
-        printf("Opcao invalida. Tente novamente: ");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Opcao invalida. Tente novamente: ");
         scanf("%d", &tipoCartao);
+        printf("\n-----------------------------------------------------------\n\n");
         }
 
         
@@ -381,7 +513,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         scanf(" %c", &pagamentoAprovado);
 
         if (pagamentoAprovado == 'n' || pagamentoAprovado == 'N') {
-            printf("Pagamento nao aprovado. Cancelando a venda.\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento nao aprovado. Cancelando a venda.");
+            printf("\n-----------------------------------------------------------\n\n");
 
             // Reverter as vendas
             for (int i = 0; i < vendasTempCount; i++) {
@@ -394,7 +528,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
             }
             return;  // Finaliza a função, cancelando a venda
         } else {
-            printf("Pagamento aprovado e processado para o tipo de cartao.\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento aprovado e processado para o tipo de cartao.");
+            printf("\n-----------------------------------------------------------\n\n");
         }
 
     } else if (metodoPagamento == 1) {
@@ -403,7 +539,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         scanf(" %c", &pagamentoAprovado);
 
         if (pagamentoAprovado == 'n' || pagamentoAprovado == 'N') {
-            printf("Pagamento em dinheiro nao aprovado. Cancelando a venda.\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento em dinheiro nao aprovado. Cancelando a venda.");
+            printf("\n-----------------------------------------------------------\n\n");
 
             // Reverter as vendas
             for (int i = 0; i < vendasTempCount; i++) {
@@ -411,12 +549,16 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
                 struct Produto *produto = procurarProduto(produtos, numProdutos, idProdutoTemp);
                 if (produto != NULL) {
                     produto->quantidade += quantidadesVendidas[i]; // Retorna ao estoque
-                    printf("Produto %s retornado ao estoque.\n", produto->nome);
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Produto %s retornado ao estoque.\n", produto->nome);
+                    printf("\n-----------------------------------------------------------\n\n");
                 }
             }
             return;
         } else {
-            printf("Pagamento em dinheiro realizado com sucesso.\n\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento em dinheiro realizado com sucesso.");
+            printf("\n-----------------------------------------------------------\n\n");
         }
 
     } else if (metodoPagamento == 3) {
@@ -425,7 +567,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
         scanf(" %c", &pagamentoAprovado);
 
         if (pagamentoAprovado == 'n' || pagamentoAprovado == 'N') {
-            printf("Pagamento via Pix nao aprovado. Cancelando a venda.\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento via Pix nao aprovado. Cancelando a venda.");
+            printf("\n-----------------------------------------------------------\n\n");
 
             // Reverter as vendas
             for (int i = 0; i < vendasTempCount; i++) {
@@ -433,19 +577,26 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador) {
                 struct Produto *produto = procurarProduto(produtos, numProdutos, idProdutoTemp);
                 if (produto != NULL) {
                     produto->quantidade += quantidadesVendidas[i]; // Retorna ao estoque
-                    printf("Produto %s retornado ao estoque.\n", produto->nome);
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Produto %s retornado ao estoque.\n", produto->nome);
+                    printf("\n-----------------------------------------------------------\n\n");
                 }
             }
             return;
         } else {
-            printf("Pagamento via Pix realizado com sucesso.\n");
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Pagamento via Pix realizado com sucesso.");
+            printf("\n-----------------------------------------------------------\n\n");
         }
     } else {
-        printf("Metodo de pagamento invalido. Tente novamente.\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Metodo de pagamento invalido. Tente novamente.");
+        printf("\n-----------------------------------------------------------\n\n");
         return;
     }
 
     salvarProdutos(produtos, *contador); // Salva o estado atualizado dos produtos
+    
 }
 
 int main() {
@@ -465,7 +616,7 @@ int main() {
         printf("Erro ao abrir o arquivo. Encerrando o programa.\n");
         return 1;
     } else if (permissao == 0) {
-        printf("Erro: Usuário não encontrado.\n");
+        printf("Erro: Usuario nao encontrado.\n");
         return 1;
     } // permissao 
 
@@ -507,7 +658,7 @@ int main() {
                 if (permissao == 1) {
                     cadastrarProduto(produtos, &contador, 0, 0); // Cadastro de produto
                 } else {
-                    realizarVenda(produtos, contador, &contador); // Chama a funcao de venda
+                    realizarVenda(produtos, contador, &contador, nomeUsuario); // Chama a funcao de venda
                 }
                 break;
             case 3:
@@ -519,9 +670,11 @@ int main() {
                 break;
             case 4:
                 if (permissao == 1) {
-                    realizarVenda(produtos, contador, &contador); // Chama a funcao de venda
+                    realizarVenda(produtos, contador, &contador, nomeUsuario); // Chama a funcao de venda
                 } else {
-                    printf("Saindo do sistema...\n");
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Saindo do sistema...");
+                    printf("\n-----------------------------------------------------------\n\n");
                     return 0;
                 }
                 break;
@@ -529,19 +682,27 @@ int main() {
                 if (permissao == 1) {
                     finalizarDia(); // Chama a função de finalizar o dia
                 } else {
-                    printf("Opcao invalida! Tente novamente.\n");
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Opcao invalida. Tente novamente.");
+                    printf("\n-----------------------------------------------------------\n\n");
                 }
                 break;
             case 6:
                 if (permissao == 1) {
-                    printf("Saindo do sistema...\n");
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Saindo do sistema...");
+                    printf("\n-----------------------------------------------------------\n\n");
                 return 0;
                 } else {
-                    printf("Opcao invalida! Tente novamente.\n");
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Opcao invalida. Tente novamente.");
+                    printf("\n-----------------------------------------------------------\n\n");
                 }
                 break;
             default:
-                printf("Opcao invalida! Tente novamente.\n");
+                printf("\n-----------------------------------------------------------\n");
+                printf("*Opcao invalida. Tente novamente.");
+                printf("\n-----------------------------------------------------------\n\n");
                 break;
         }
         printf("\nPressione Enter para continuar...");
