@@ -1,7 +1,6 @@
-#include "HeadUsuario.h"
+#include "Cab_Usuario.h"
 
-
-// Fun√ß√£o para limpar a tela
+// FunÁ„o para limpar a tela
 void limparTela() {
     #ifdef _WIN32
         system("cls");
@@ -10,42 +9,46 @@ void limparTela() {
     #endif
 }
 
-// Verifica se uma senha j√° existe no sistema
+// Verifica se uma senha j· existe no sistema
 int senhaExistente(char *senha) {
     FILE *arquivo = fopen("Usuario.txt", "r");
     if (arquivo == NULL) {
-        return 0; // Arquivo n√£o encontrado
+        return 0; // Arquivo n„o encontrado
     }
 
     struct Usuario usuario;
     while (fscanf(arquivo, "%s %s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
         if (strcmp(usuario.senha, senha) == 0) {
             fclose(arquivo);
-            return 1; // Senha j√° existe
+            return 1; // Senha j· existe
         }
     }
     fclose(arquivo);
     return 0;
 }
 
-// Cadastra um novo usu√°rio
-void cadastrarUsuario() {    
+// Cadastra um novo usu·rio
+void cadastrarUsuario() {
     limparTela();
+
     int j = 0;
     char cr;
+
     FILE *arquivo = fopen("Usuario.txt", "a");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Erro ao abrir o arquivo!");
+        printf("\n-----------------------------------------------------------\n");
         return;
     }
 
     struct Usuario usuario;
     printf("Digite o nome do usuario: ");
     scanf("%49s", usuario.nomeUs);
-    
-    do {   
+
+    do {
         printf("Digite a senha do usuario: ");
-    
+
         while ((cr = getch()) != '\r') {
             if (cr == '\b' && j > 0) {
                 j--;
@@ -58,26 +61,48 @@ void cadastrarUsuario() {
         usuario.senha[j] = '\0';
 
         if (senhaExistente(usuario.senha)) {
-            printf("\nSenha ja existente! Digite uma senha diferente.\n");                
+            printf("\n-----------------------------------------------------------\n");
+            printf("*Senha ja existente!!! Digite uma senha diferente.");
+            printf("\n-----------------------------------------------------------\n\n");
         } else {
             break;
         }
     } while (1);
 
-    printf("\nO usuario √© administrador? [S/N] ");
+    printf("\nO usuario e¥ administrador? [S/N]:");
     scanf(" %c", &usuario.funcionario);
     limparTela();
 
-    fprintf(arquivo, "%s %s %c\n", usuario.nomeUs, usuario.senha, usuario.funcionario); 
+    if (usuario.funcionario == 'S' || usuario.funcionario == 's' ) {
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Cadastro de usuario do tipo administrador concluido.");
+        printf("\n-----------------------------------------------------------\n\n");
+    } else if (usuario.funcionario == 'N' || usuario.funcionario == 'n') {
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Cadastro de usuario do tipo funcionario concluido.");
+        printf("\n-----------------------------------------------------------\n\n");
+    } else {
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Opcao invalida!");
+        printf("\n-----------------------------------------------------------\n\n");
+        fclose(arquivo);
+        return;
+    }
+
+    fprintf(arquivo, "%s %s %c\n", usuario.nomeUs, usuario.senha, usuario.funcionario);
     fclose(arquivo);
-    printf("Cadastro salvo com sucesso!\n");
+    printf("\n-----------------------------------------------------------\n");
+    printf("*Cadastro salvo com sucesso!");
+    printf("\n-----------------------------------------------------------\n\n");
 }
 
-// Verifica se o usu√°rio existe no sistema
+// Verifica se o usu·rio existe no sistema
 int verificarUsuario(char *nome, char *senha) {
     FILE *arquivo = fopen("Usuario.txt", "r");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Erro ao abrir o arquivo!");
+        printf("\n-----------------------------------------------------------\n");
         return -1;
     }
 
@@ -85,14 +110,14 @@ int verificarUsuario(char *nome, char *senha) {
     while (fscanf(arquivo, "%s %s %c", usuario.nomeUs, usuario.senha, &usuario.funcionario) != EOF) {
         if (strcmp(usuario.nomeUs, nome) == 0 && strcmp(usuario.senha, senha) == 0) {
             fclose(arquivo);
-            return 1; 
+            return 1;
         }
     }
     fclose(arquivo);
     return 0;
 }
 
-// Faz o login do usu√°rio
+// Faz o login do usu·rio
 int fazerLogin(char *nomeUsuario) {
     char senhaUsuario[50];
     int i = 0;
@@ -111,16 +136,18 @@ int fazerLogin(char *nomeUsuario) {
     senhaUsuario[i] = '\0';
     limparTela();
 
-    if ((strcmp(nomeUsuario, "admin") == 0 && strcmp(senhaUsuario, "admin") == 0) || 
+    if ((strcmp(nomeUsuario, "admin") == 0 && strcmp(senhaUsuario, "admin") == 0) ||
         verificarUsuario(nomeUsuario, senhaUsuario)) {
         return 1;
     } else {
-        printf("Acesso Negado. Nome ou senha incorretos.\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Acesso Negado. Nome ou senha de usuario incorretos.");
+        printf("\n-----------------------------------------------------------\n\n");
         return 0;
     }
 }
 
-// Verifica a permiss√£o do usu√°rio (admin ou funcion√°rio)
+// Verifica a permiss„o do usu·rio (admin ou funcion·rio)
 int verificarPermissao(char *nomeUsuario) {
     if (strcmp(nomeUsuario, "admin") == 0) {
         printf("Bem-vindo admin!\n");
@@ -129,7 +156,9 @@ int verificarPermissao(char *nomeUsuario) {
 
     FILE *arquivo = fopen("Usuario.txt", "r");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
+        printf("\n-----------------------------------------------------------\n");
+        printf("*Erro ao abrir o arquivo!");
+        printf("\n-----------------------------------------------------------\n");
         return 0;
     }
 
@@ -141,7 +170,7 @@ int verificarPermissao(char *nomeUsuario) {
                 printf("Bem-vindo admin!\n");
                 return 1;
             } else {
-                printf("Bem-vindo!\n");
+                printf("Bem-vindo funcionario!\n");
                 return 2;
             }
         }

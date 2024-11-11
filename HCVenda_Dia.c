@@ -1,10 +1,4 @@
 #include "HeadVenda_dia.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define MAX_PRODUTOS 100
-#define MARGEM 0.2
 
 int contadorDias; // Variável global para o contador de dias
 

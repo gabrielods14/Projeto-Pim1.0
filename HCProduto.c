@@ -1,5 +1,4 @@
 #include "HeadProduto.h"
-#include "HeadUsuario.h"
 
 // Função para salvar os produtos no arquivo
 void salvarProdutos(struct Produto produtos[], int contador) {

@@ -4,7 +4,6 @@
 
 #define MAX_PRODUTOS 100
 #define ARQUIVO "produtos.txt"
-#define MARGEM 0.20
 
 int contadorVendas = 0; // Contador global de vendas
 int contadorDias = 1;   // Contador global de dias
@@ -347,7 +346,7 @@ void finalizarDia() {
     contadorDias++;
 }
 
-void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float pagamento) {
+void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento) {
 
 printf("                                                             ===============================================\n");
 printf("                                                            |                    PEDIDO                     |\n");
@@ -362,13 +361,13 @@ printf("                                                            |===========
 
 // Laço para listar os produtos
 for (int i = 0; i < numProdutos; i++) {
-    printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-8.2f |\n", produtos[i].id, produtos[i].nome, produtos[i].quantidade, produtos[i].preco, pagamento);
+    printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-6.2f |\n", produtos[i].id, produtos[i].nome, qntProdUni, produtos[i].preco, produtos[i].preco*qntProdUni);
 }
 
 printf("                                                            |===============================================|\n");  
-printf("                                                            | %02d ITEM(S)                          %.2f      |\n", numProdutos, pagamento);
+printf("                                                            | %02d ITEM(S)                             %.2f   |\n", numProdutos, pagamento);
 printf("                                                            |===============================================|\n"); 
-printf("                                                            |                   DINHEIRO :         %.2f     |\n", pagamento);
+printf("                                                            |                   DINHEIRO :           %.2f   |\n", pagamento);
 printf("                                                            |                             ------------------|\n");    
 printf("                                                            |                                               |\n");
 printf("                                                            |-----------------------------------------------|\n");
@@ -416,7 +415,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
             }
 
             if (quantidadeVenda > 0 && quantidadeVenda <= produto->quantidade) {
-                float precoFinal = produto->preco * (1 + MARGEM);
+                float precoFinal = produto->preco;
                 float valorVenda = precoFinal * quantidadeVenda;
                 printf("Preco do produto %s: R$%.2f\n", produto->nome, precoFinal);
                 printf("Valor total da venda: R$%.2f\n", valorVenda);
@@ -471,7 +470,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
         return;
     }
     
-    imprimirNotaFiscal(vendedor, vendasTemp, vendasTempCount, total);
+    imprimirNotaFiscal(vendedor, vendasTemp, vendasTempCount, quantidadeVenda, total);
 
     // Adicionando opções de pagamento
     int metodoPagamento;

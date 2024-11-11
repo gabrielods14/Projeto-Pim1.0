@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc.exe build active file",
+			"command": "C:/MinGW/bin/gcc.exe",
+			"args": [
+				"ProgOtimizado.c",
+                "HeadUsuario.c",
+                "HeadProduto.c",
+                "HeadVenda_dia.c",
+				"-o",
+				"Projeto-Pim1.0.exe"
+			],
+			"options": {
+				"cwd": "C:/MinGW/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Compilação do Projeto-Pim1.0"
+		}
+	]
+}

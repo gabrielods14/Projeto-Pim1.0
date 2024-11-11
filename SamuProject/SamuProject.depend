@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1731351550 source:c:\users\win10\onedrive\documentos\c main\samuproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Cab_Usuario.h"
+	"Cab_Produto.h"
+	"Cab_FinalizarD.h"
+
+1731341439 c:\users\win10\onedrive\documentos\c main\samuproject\cab_usuario.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1731351517 c:\users\win10\onedrive\documentos\c main\samuproject\cab_produto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1731341862 c:\users\win10\onedrive\documentos\c main\samuproject\cab_finalizard.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Cab_Produto.h"
+
+1731342075 source:c:\users\win10\onedrive\documentos\c main\samuproject\cab_produto.c
+	"Cab_Produto.h"
+
+1731344639 source:c:\users\win10\onedrive\documentos\c main\samuproject\cab_usuario.c
+	"Cab_Usuario.h"
+
+1731341858 source:c:\users\win10\onedrive\documentos\c main\samuproject\cab_finalizard.c
+	"Cab_FinalizarD.h"
+
