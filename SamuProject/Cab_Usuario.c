@@ -69,7 +69,7 @@ void cadastrarUsuario() {
         }
     } while (1);
 
-    printf("\nO usuario e´ administrador? [S/N]:");
+    printf("\nO usuario e administrador? [S/N]: ");
     scanf(" %c", &usuario.funcionario);
     limparTela();
 

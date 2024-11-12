@@ -45,7 +45,7 @@ void carregarContadorDias() {
 void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeVendida, int dia) {
     if (precoFinal <= 0 || quantidadeVendida <= 0) {
         printf("\n-----------------------------------------------------------\n");
-        printf("*Erro: Preço ou quantidade inválidos.");
+        printf("*Erro: Preco ou quantidade invalidos.");
         printf("\n-----------------------------------------------------------\n");
         return;
     }
@@ -69,6 +69,11 @@ void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeV
 
 void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento) {
 
+    printf("\n-----------------------------------------------------------\n");
+    printf("*Gerando Nota Fiscal...\n*Pressione Enter");
+    printf("\n-----------------------------------------------------------\n");
+    getchar(); // Consumir newline restante
+    getchar(); // Aguarda o Enter
     printf("                                                             ===============================================\n");
     printf("                                                            |                    PEDIDO                     |\n");
     printf("                                                            |-----------------------------------------------|\n");
@@ -94,6 +99,7 @@ void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdu
     printf("                                                            |-----------------------------------------------|\n");
     printf("                                                            | Obrigado pela preferencia.                    |\n");
     printf("                                                             =============================================== \n\n\n");
+
 
     }
 
@@ -138,7 +144,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
             }
 
             if (quantidadeVenda > 0 && quantidadeVenda <= produto->quantidade) {
-                float precoFinal = produto->preco);
+                float precoFinal = produto->preco;
                 float valorVenda = precoFinal * quantidadeVenda;
                 printf("Preco do produto %s: R$%.2f\n", produto->nome, precoFinal);
                 printf("Valor total da venda: R$%.2f\n", valorVenda);
@@ -176,14 +182,14 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
             }
         } else {
             printf("\n-----------------------------------------------------------\n");
-            printf("*Produto com ID %d nao encontrado.\n\n", idProduto);
+            printf("*Produto com ID %d nao encontrado.\n", idProduto);
             printf("\n-----------------------------------------------------------\n\n");
         }
-
+        printf("\n-----------------------------------------------------------\n");
         printf("Digite o ID do proximo produto (0 para finalizar): ");
     }
-
-    printf("Total a pagar: R$%.2f\n\n", total);
+    printf("\n-----------------------------------------------------------\n");
+    printf("*Total a pagar: R$%.2f\n", total);
 
     // Verificação se o total é igual a zero
     if (total == 0) {
@@ -210,8 +216,8 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
         printf("\n-----------------------------------------------------------\n");
         printf("*Opcao invalida. Tente novamente: ");
         scanf("%d", &metodoPagamento);
-        printf("\n-----------------------------------------------------------\n");
     }
+
 
     // Variável para a confirmação de pagamento
     char pagamentoAprovado;
@@ -219,19 +225,18 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
     if (metodoPagamento == 2) {
         int tipoCartao;
         printf("Escolha o tipo de cartao:\n");
-        printf(" _________________\n");
+        printf(" __________________\n");
         printf("|1-Credito         |\n");
         printf("|2-Debito          |\n");
         printf("|3-Voucher         |\n");
         printf("|__________________|\n\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &tipoCartao);
-11
+
         while (tipoCartao < 1 || tipoCartao > 3) {
         printf("\n-----------------------------------------------------------\n");
         printf("*Opcao invalida. Tente novamente: ");
         scanf("%d", &tipoCartao);
-        printf("\n-----------------------------------------------------------\n\n");
         }
 
         printf("O pagamento foi aprovado? [S/N]: ");
@@ -248,7 +253,9 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
                 struct Produto *produto = procurarProduto(produtos, numProdutos, idProdutoTemp);
                 if (produto != NULL) {
                     produto->quantidade += quantidadesVendidas[i]; // Retorna ao estoque
-                    printf("Produto %s retornado ao estoque.\n", produto->nome);
+                    printf("\n-----------------------------------------------------------\n");
+                    printf("*Produto %s retornado ao estoque.", produto->nome);
+                    printf("\n-----------------------------------------------------------\n");
                 }
             }
             return;  // Finaliza a função, cancelando a venda
@@ -259,7 +266,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
         }
 
     } else if (metodoPagamento == 1) {
-        printf("Pagamento em dinheiro selecionado.\n");
+        printf("Pagamento em dinheiro selecionado.\n\n");
         printf("O pagamento em dinheiro foi aprovado? [S/N]: ");
         scanf(" %c", &pagamentoAprovado);
 
@@ -287,8 +294,8 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
         }
 
     } else if (metodoPagamento == 3) {
-        printf("Pagamento via Pix selecionado.\n");
-        printf("O pagamento via Pix foi aprovado? (s/n): ");
+        printf("Pagamento via Pix selecionado.\n\n");
+        printf("O pagamento via Pix foi aprovado? [S/N]: ");
         scanf(" %c", &pagamentoAprovado);
 
         if (pagamentoAprovado == 'n' || pagamentoAprovado == 'N') {

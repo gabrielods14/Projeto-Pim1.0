@@ -14,7 +14,7 @@ void finalizarDia();
 
 // Funções para registro e processamento de vendas
 void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeVendida, int dia);
-void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float pagamento);
+void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento);
 void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, char vendedor[]);
 
 #endif // CAB_FINALIZARD_H_INCLUDED
