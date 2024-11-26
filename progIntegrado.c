@@ -348,31 +348,37 @@ void finalizarDia() {
 
 void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento) {
 
-printf("                                                             ===============================================\n");
-printf("                                                            |                    PEDIDO                     |\n");
-printf("                                                            |-----------------------------------------------|\n");
-printf("                                                            |                  HORTIFRUTI                   |\n");
-printf("                                                            |                                               |\n");
-printf("                                                            |-----------------------------------------------|\n");
-printf("                                                            | VENDEDOR :  %-12s                      |\n", vendedor);
-printf("                                                            |===============================================|\n");
-printf("                                                            | ID   NOME            Qtd    R$/Kg      Total  |\n"); 
-printf("                                                            |===============================================|\n"); 
+printf("\n-----------------------------------------------------------\n");
+    printf("*Gerando Nota Fiscal...\n*Pressione Enter");
+    printf("\n-----------------------------------------------------------\n");
+    getchar(); // Consumir newline restante
+    getchar(); // Aguarda o Enter
+    printf("                                                             ===============================================\n");
+    printf("                                                            |                    PEDIDO                     |\n");
+    printf("                                                            |-----------------------------------------------|\n");
+    printf("                                                            |                  HORTIFRUTI                   |\n");
+    printf("                                                            |                                               |\n");
+    printf("                                                            |-----------------------------------------------|\n");
+    printf("                                                            | VENDEDOR :  %-12s                      |\n", vendedor);
+    printf("                                                            |===============================================|\n");
+    printf("                                                            | ID   NOME            Qtd    R$/Kg      Total  |\n");
+    printf("                                                            |===============================================|\n");
 
-// Laço para listar os produtos
-for (int i = 0; i < numProdutos; i++) {
-    printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-6.2f |\n", produtos[i].id, produtos[i].nome, qntProdUni, produtos[i].preco, produtos[i].preco*qntProdUni);
-}
+    // Laço para listar os produtos
+    for (int i = 0; i < numProdutos; i++) {
+        printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-6.2f |\n", produtos[i].id, produtos[i].nome, qntProdUni, produtos[i].preco, produtos[i].preco*qntProdUni);
+    }
 
-printf("                                                            |===============================================|\n");  
-printf("                                                            | %02d ITEM(S)                             %.2f   |\n", numProdutos, pagamento);
-printf("                                                            |===============================================|\n"); 
-printf("                                                            |                   DINHEIRO :           %.2f   |\n", pagamento);
-printf("                                                            |                             ------------------|\n");    
-printf("                                                            |                                               |\n");
-printf("                                                            |-----------------------------------------------|\n");
-printf("                                                            | Obrigado pela preferencia.                    |\n");
-printf("                                                             =============================================== \n\n\n"); 
+    printf("                                                            |===============================================|\n");
+    printf("                                                            | %02d ITEM(S)                             %.2f   |\n", numProdutos, pagamento);
+    printf("                                                            |===============================================|\n");
+    printf("                                                            |                   DINHEIRO :           %.2f   |\n", pagamento);
+    printf("                                                            |                             ------------------|\n");
+    printf("                                                            |                                               |\n");
+    printf("                                                            |-----------------------------------------------|\n");
+    printf("                                                            | Obrigado pela preferencia.                    |\n");
+    printf("                                                             =============================================== \n\n\n");
+
 
 }
 

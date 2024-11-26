@@ -9,9 +9,9 @@
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Users/WIN10/OneDrive/Documentos/ProgIntegrado/Projeto-Pim1.0",
-      "program": "c:/Users/WIN10/OneDrive/Documentos/ProgIntegrado/Projeto-Pim1.0/build/Debug/outDebug",
+      "program": "c:/Users/WIN10/OneDrive/Documentos/ProgIntegrado/Projeto-Pim1.0/Projeto-Pim1.0.exe",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "C:/MinGW/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

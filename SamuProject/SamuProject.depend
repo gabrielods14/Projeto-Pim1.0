@@ -32,3 +32,36 @@
 1731429182 source:c:\users\win10\onedrive\documentos\c main\samuproject\cab_finalizard.c
 	"Cab_FinalizarD.h"
 
+1732636859 source:c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Cab_Usuario.h"
+	"Cab_Produto.h"
+	"Cab_FinalizarD.h"
+
+1732634760 c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_usuario.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1732636418 c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_produto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1732582165 c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_finalizard.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Cab_Produto.h"
+
+1732661790 source:c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_finalizard.c
+	"Cab_FinalizarD.h"
+
+1732662003 source:c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_produto.c
+	"Cab_Produto.h"
+
+1732638460 source:c:\users\win10\onedrive\documentos\progintegrado\projeto-pim1.0\samuproject\cab_usuario.c
+	"Cab_Usuario.h"
+

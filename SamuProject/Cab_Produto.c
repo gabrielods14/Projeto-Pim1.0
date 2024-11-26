@@ -1,9 +1,9 @@
-#include "Cab_Produto.h"
+#include "Cab_Produto.h" // Inclui o Cabecalho com a declara√ß√£o da struct Produto e fun√ß√µes
 
-// FunÁ„o para salvar os produtos no arquivo
+// Fun√ß√£o para salvar os produtos no arquivo
 void salvarProdutos(struct Produto produtos[], int contador) {
-    FILE *arquivo = fopen(ARQUIVO, "w");
-    if (arquivo == NULL) {
+    FILE *arquivo = fopen(ARQUIVO, "w"); // Abre o arq para escrita
+    if (arquivo == NULL) { // Verifica se nao ha conteudo no arq
         printf("\n-----------------------------------------------------------\n");
         printf("*Erro ao abrir o arquivo para escrita.");
         printf("\n-----------------------------------------------------------\n");
@@ -12,15 +12,15 @@ void salvarProdutos(struct Produto produtos[], int contador) {
 
     for (int i = 0; i < contador; i++) {
         fprintf(arquivo, "ID:%d | Nome:%s | Preco por Kg: R$%.2f | Quantidade: %.2f Kg\n",
-                produtos[i].id, produtos[i].nome, produtos[i].preco, produtos[i].quantidade);
+                produtos[i].id, produtos[i].nome, produtos[i].preco, produtos[i].quantidade); // Imprime no arq os dados dos produtos cadastrados
     }
 
     fclose(arquivo);
 }
 
-// FunÁ„o para carregar os produtos do arquivo
+// Fun√ß√£o para carregar os produtos do arquivo
 int carregarProdutos(struct Produto produtos[]) {
-    FILE *arquivo = fopen(ARQUIVO, "r");
+    FILE *arquivo = fopen(ARQUIVO, "r"); // Abre arq para leitura
     if (arquivo == NULL) {
         printf("\n-----------------------------------------------------------\n");
         printf("*Nenhum Produto Cadastrado.");
@@ -28,21 +28,21 @@ int carregarProdutos(struct Produto produtos[]) {
         return 0;
     }
 
-    int contador = 0;
+    int contador = 0; // Contador influencia na contagem de cada var por array da struct Produto
     while (fscanf(arquivo, "ID:%d | Nome:%s | Preco por Kg: R$%f | Quantidade: %f Kg\n",
                   &produtos[contador].id, produtos[contador].nome,
-                  &produtos[contador].preco, &produtos[contador].quantidade) == 4) {
+                  &produtos[contador].preco, &produtos[contador].quantidade) == 4) { // Verifica foi lido os 4 valores esperados senao o loop se encerra
         contador++;
     }
 
     fclose(arquivo);
-    return contador;
+    return contador; // Retorna a quantidade de produtos lidos com sucesso
 }
 
-// FunÁ„o para cadastrar ou atualizar um produto
+// Fun√ß√£o para cadastrar ou atualizar um produto
 void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualizacao, int idProdutoAtualizar) {
     limparTela();
-    if (modoAtualizacao == 0 && *contador >= MAX_PRODUTOS) {
+    if (modoAtualizacao == 0 && *contador >= MAX_PRODUTOS) { // Verifica se o n√∫mero de produtos cadastrados atingiu o limite
         printf("\n-----------------------------------------------------------\n");
         printf("*Limite de produtos cadastrados atingido.");
         printf("\n-----------------------------------------------------------\n");
@@ -50,7 +50,7 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
     }
 
     struct Produto novoProduto;
-    if (modoAtualizacao == 1) {
+    if (modoAtualizacao == 1) { //
         novoProduto = produtos[idProdutoAtualizar];
         printf("\n-----------------------------------------------------------\n");
         printf("*Atualizando quantidade do produto %s (ID %d).", novoProduto.nome, novoProduto.id);
@@ -92,7 +92,7 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
     salvarProdutos(produtos, *contador);
 }
 
-// FunÁ„o para listar todos os produtos
+// Fun√ß√£o para listar todos os produtos
 void listarProdutos(struct Produto produtos[], int contador) {
     limparTela();
     if (contador == 0) {
@@ -111,7 +111,7 @@ void listarProdutos(struct Produto produtos[], int contador) {
     }
 }
 
-// FunÁ„o para procurar um produto pelo ID
+// Fun√ß√£o para procurar um produto pelo ID
 struct Produto* procurarProduto(struct Produto produtos[], int numProdutos, int id) {
     for (int i = 0; i < numProdutos; i++) {
         if (produtos[i].id == id) {

@@ -7,11 +7,32 @@
 			"command": "C:/MinGW/bin/gcc.exe",
 			"args": [
 				"ProgOtimizado.c",
-                "HeadUsuario.c",
-                "HeadProduto.c",
-                "HeadVenda_dia.c",
+				"HeadUsuario.c",
+				"HeadProduto.c",
+				"HeadVenda_dia.c",
 				"-o",
 				"Projeto-Pim1.0.exe"
+			],
+			"options": {
+				"cwd": "C:/MinGW/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "Compilação do Projeto-Pim1.0"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc.exe build active file",
+			"command": "C:/MinGW/bin/gcc.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				""
 			],
 			"options": {
 				"cwd": "C:/MinGW/bin"
@@ -23,7 +44,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "Compilação do Projeto-Pim1.0"
+			"detail": "compiler: C:/MinGW/bin/gcc.exe"
 		}
 	]
 }

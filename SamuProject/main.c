@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "Cab_Usuario.h"
-#include "Cab_Produto.h"
-#include "Cab_FinalizarD.h"
+#include <stdio.h> // Biblioteca de funcoes basicas de C como printf e scanf
+#include <stdlib.h> // Biblioteca de funcoes envolventes de memoria
+#include <string.h> // Biblioteca propriamente de strings
+#include "Cab_Usuario.h" // Cabecalho de funcoes de cadastro, verificacao, login e outras de usuario
+#include "Cab_Produto.h" // Cabecalho de funcoes de cadastro, listagem, verificacao e outras de produto
+#include "Cab_FinalizarD.h" // Cabecalho de funcoes de venda de produtos e finalizacao de dias
 
 
 int main()
@@ -35,11 +35,11 @@ int main()
 
     struct Produto produtos[MAX_PRODUTOS];
     int contador = carregarProdutos(produtos); // Carrega os produtos ao iniciar
-    int opcao; // variável para a opção de cadastro
+    int opcao; // variavel para a opcao de cadastro
 
-    // Loop para mostrar o menu até que o usuário escolha sair
+    // Loop para mostrar o menu ate que o usuario escolha sair
     while (1) {
-        // Menu de opções
+        // Menu de opcoes
         printf("\nEscolha uma das opcoes: \n");
         printf(" __________________________\n");
         if (permissao == 1) { // Menu para administradores
@@ -49,27 +49,27 @@ int main()
             printf("|4-Venda                   |\n");
             printf("|5-Finalizar dia           |\n");
             printf("|6-Sair                    |\n");
-        } else if (permissao == 2) { // Menu para funcionários
+        } else if (permissao == 2) { // Menu para funcionarios
             printf("|1-Listar produtos         |\n");
             printf("|2-Venda                   |\n");
             printf("|3-Finalizar dia           |\n");
             printf("|4-Sair                    |\n");
         }
         printf("|__________________________|\n\n");
-        scanf("%d", &opcao); // Lê a opção do usuário
+        scanf("%d", &opcao); // Le a opcao do usuario
 
-        // Estrutura switch para opções
+        // Estrutura switch para opcoes
         switch (opcao) {
             case 1:
                 if (permissao == 1) {
-                    cadastrarUsuario(); //chama a função de cadastro de usuario, tipo void
+                    cadastrarUsuario(); //chama a funcao de cadastro de usuario do tipo void
                 } else {
-                    listarProdutos(produtos, contador);
+                    listarProdutos(produtos, contador); // Chama a funcao de listar produtos
                 }
-                break;
+                break; // Termina o looping e retorna ao menu
             case 2:
                 if (permissao == 1) {
-                    cadastrarProduto(produtos, &contador, 0, 0); // Cadastro de produto
+                    cadastrarProduto(produtos, &contador, 0, 0); // Chama a funcao de cadastro de produto
                 } else {
                     realizarVenda(produtos, contador, &contador, nomeUsuario); // Chama a funcao de venda
                 }
@@ -78,22 +78,22 @@ int main()
                 if (permissao == 1) {
                     listarProdutos(produtos, contador);
                 } else {
-                    finalizarDia(); // Chama a função de finalizar o dia
+                    finalizarDia(); // Chama a funcao de finalizar o dia
                 }
                 break;
             case 4:
                 if (permissao == 1) {
-                    realizarVenda(produtos, contador, &contador, nomeUsuario); // Chama a funcao de venda
+                    realizarVenda(produtos, contador, &contador, nomeUsuario);
                 } else {
                     printf("\n-----------------------------------------------------------\n");
                     printf("*Saindo do sistema...");
                     printf("\n-----------------------------------------------------------\n");
-                    return 0;
+                    return 0; // Encerra o programa  por opcao do usuario
                 }
                 break;
             case 5:
                 if (permissao == 1) {
-                    finalizarDia(); // Chama a função de finalizar o dia
+                    finalizarDia();
                 } else {
                     printf("\n-----------------------------------------------------------\n");
                     printf("*Opcao invalida. Tente novamente.");
@@ -121,7 +121,7 @@ int main()
         printf("\nPressione Enter para continuar...");
         getchar(); // Consumir newline restante
         getchar(); // Aguarda o Enter
-        limparTela();
+        limparTela(); // Funcao para limpar tela que auxilia na orientacao do usuario
     }
     return 0;
 }

@@ -4,15 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Cab_Produto.h"
+#include "Cab_Produto.h" // Cabecalho de produtos, necessario para funcionamento de algumas funcoes do Cabecalho de dias 
 
 
-// Funções para gerenciar o contador de dias
+// FunÃ§Ãµes para gerenciar o contador de dias
 void salvarContadorDias();
 void carregarContadorDias();
 void finalizarDia();
 
-// Funções para registro e processamento de vendas
+// FunÃ§Ãµes para registro e processamento de vendas
 void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeVendida, int dia);
 void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento);
 void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, char vendedor[]);

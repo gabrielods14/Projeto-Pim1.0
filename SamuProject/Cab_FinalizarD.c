@@ -1,10 +1,10 @@
-#include "Cab_FinalizarD.h"
+#include "Cab_FinalizarD.h" // Inclui o Cabecalho com a declaraÃ§Ã£o das funÃ§Ãµes usuadas
 
-// Variáveis globais
+// Variaveis globais
 int contadorVendas = 0;
 int contadorDias = 1;
 
-// Função para finalizar o dia e salvar o contador de dias
+// Funcao para finalizar o dia e salvar o contador de dias
 void finalizarDia() {
     printf("\n-----------------------------------------------------------\n");
     printf("*Finalizando o dia %d...", contadorDias);
@@ -14,7 +14,7 @@ void finalizarDia() {
     salvarContadorDias();
 }
 
-// Função para salvar o contador de dias em um arquivo
+// Funcao para salvar o contador de dias em um arquivo
 void salvarContadorDias() {
     FILE *arquivo = fopen("contadorDias.txt", "w");
     if (arquivo == NULL) {
@@ -27,7 +27,7 @@ void salvarContadorDias() {
     fclose(arquivo);
 }
 
-// Função para carregar o contador de dias de um arquivo
+// Funcao para carregar o contador de dias de um arquivo
 void carregarContadorDias() {
     FILE *arquivo = fopen("contadorDias.txt", "r");
     if (arquivo == NULL) {
@@ -41,7 +41,7 @@ void carregarContadorDias() {
     fclose(arquivo);
 }
 
-// Função para registrar uma venda em um arquivo específico para o dia
+// Funcao para registrar uma venda em um arquivo especifico para o dia
 void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeVendida, int dia) {
     if (precoFinal <= 0 || quantidadeVendida <= 0) {
         printf("\n-----------------------------------------------------------\n");
@@ -65,15 +65,17 @@ void registrarVenda(const char *nomeProduto, float precoFinal, float quantidadeV
     fclose(arquivo);
 }
 
-// Função para imprimir uma nota fiscal
+// Funcao para imprimir uma nota fiscal
 
 void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdutos, float qntProdUni, float pagamento) {
 
+    // Espera o usuÃ¡rio pressionar Enter para continuar (consome o '\n' que fica na entrada do buffer)
     printf("\n-----------------------------------------------------------\n");
     printf("*Gerando Nota Fiscal...\n*Pressione Enter");
     printf("\n-----------------------------------------------------------\n");
     getchar(); // Consumir newline restante
     getchar(); // Aguarda o Enter
+
     printf("                                                             ===============================================\n");
     printf("                                                            |                    PEDIDO                     |\n");
     printf("                                                            |-----------------------------------------------|\n");
@@ -85,9 +87,10 @@ void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdu
     printf("                                                            | ID   NOME            Qtd    R$/Kg      Total  |\n");
     printf("                                                            |===============================================|\n");
 
-    // Laço para listar os produtos
+    // LaÃ§o para listar os produtos
     for (int i = 0; i < numProdutos; i++) {
-        printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-6.2f |\n", produtos[i].id, produtos[i].nome, qntProdUni, produtos[i].preco, produtos[i].preco*qntProdUni);
+        float totalProduto = produtos[i].preco * qntProdUni;
+        printf("                                                            | %-4d %-15s %-6.2f %-10.2f %-6.2f |\n", produtos[i].id, produtos[i].nome, qntProdUni, produtos[i].preco, totalProduto);
     }
 
     printf("                                                            |===============================================|\n");
@@ -100,14 +103,13 @@ void imprimirNotaFiscal(char vendedor[], struct Produto produtos[], int numProdu
     printf("                                                            | Obrigado pela preferencia.                    |\n");
     printf("                                                             =============================================== \n\n\n");
 
-
     }
 
 
 
 
 
-// Função para realizar uma venda com opções de pagamento
+// Funcao para realizar uma venda com opcoes de pagamento
 void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, char vendedor[]) {
     limparTela();
 
@@ -115,10 +117,10 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
     float quantidadeVenda;
     float total = 0.0;
 
-    // Lista temporária para armazenar os produtos e quantidades vendidas
+    // Lista tempororia para armazenar os produtos e quantidades vendidas
     struct Produto vendasTemp[MAX_PRODUTOS];
     float quantidadesVendidas[MAX_PRODUTOS]; // Quantidades vendidas de cada produto
-    int vendasTempCount = 0; // Contador para vendas temporárias
+    int vendasTempCount = 0; // Contador para vendas temporarias
 
     printf("Bem vindo ao sistema de PDV!\n");
     printf("Digite o ID do produto (0 para finalizar): ");
@@ -191,7 +193,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
     printf("\n-----------------------------------------------------------\n");
     printf("*Total a pagar: R$%.2f\n", total);
 
-    // Verificação se o total é igual a zero
+    // Verificaï¿½ï¿½o se o total ï¿½ igual a zero
     if (total == 0) {
         printf("\n-----------------------------------------------------------\n");
         printf("*O valor total nao pode ser cobrado pois e igual a zero.");
@@ -201,7 +203,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
 
     imprimirNotaFiscal(vendedor, vendasTemp, vendasTempCount, quantidadeVenda, total);
 
-    // Adicionando opções de pagamento
+    // Adicionando opcoes de pagamento
     int metodoPagamento;
     printf("Escolha o metodo de pagamento:\n");
     printf(" __________________\n");
@@ -219,7 +221,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
     }
 
 
-    // Variável para a confirmação de pagamento
+    // Variavel para a confirmacao de pagamento
     char pagamentoAprovado;
 
     if (metodoPagamento == 2) {
@@ -258,7 +260,7 @@ void realizarVenda(struct Produto produtos[], int numProdutos, int *contador, ch
                     printf("\n-----------------------------------------------------------\n");
                 }
             }
-            return;  // Finaliza a função, cancelando a venda
+            return;  // Finaliza a funcao, cancelando a venda
         } else {
             printf("\n-----------------------------------------------------------\n");
             printf("*Pagamento aprovado e processado para o tipo de cartao.");

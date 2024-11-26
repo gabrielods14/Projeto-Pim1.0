@@ -5,14 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Estrutura de dados
+// Estrutura de dados do Usuario
 struct Usuario {
-    char nomeUs[50];
-    char senha[50];
-    char funcionario;
+    char nomeUs[50]; // nome do usuario
+    char senha[50]; // senha do usuario
+    char funcionario; // tipo do usuario, administrador ou funcionario
 };
 
-// Funções utilitárias
+// FunÃ§Ãµes utilitÃ¡rias e de usuario
 void limparTela();
 int senhaExistente(char *senha);
 void cadastrarUsuario();
