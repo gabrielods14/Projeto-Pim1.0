@@ -1,3 +1,0 @@
-ID:1 | Nome:maca | Preco por Kg: R$8.00 | Quantidade: 40.00 Kg
-ID:2 | Nome:pera | Preco por Kg: R$7.20 | Quantidade: 30.00 Kg
-ID:3 | Nome:laranja | Preco por Kg: R$8.40 | Quantidade: 55.00 Kg

@@ -1,2 +1,0 @@
-Produto: maca | Preco: R$8.00 | Quantidade vendida: 0.50 Kg
-Produto: laranja | Preco: R$8.40 | Quantidade vendida: 1.20 Kg
