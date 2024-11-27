@@ -42,7 +42,7 @@ int carregarProdutos(struct Produto produtos[]) {
 // Função para cadastrar ou atualizar um produto
 void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualizacao, int idProdutoAtualizar) {
     limparTela();
-    if (modoAtualizacao == 0 && *contador >= MAX_PRODUTOS) { // Verifica se o número de produtos cadastrados atingiu o limite
+    if (*contador >= MAX_PRODUTOS) { // Verifica se o número de produtos cadastrados atingiu o limite
         printf("\n-----------------------------------------------------------\n");
         printf("*Limite de produtos cadastrados atingido.");
         printf("\n-----------------------------------------------------------\n");
@@ -50,7 +50,7 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
     }
 
     struct Produto novoProduto;
-    if (modoAtualizacao == 1) { //
+    if (modoAtualizacao == 1) { // Está relacionado a vendas, pergunta se o usuário quer atualizar o estoque quando a quantidade chegar a 0.
         novoProduto = produtos[idProdutoAtualizar];
         printf("\n-----------------------------------------------------------\n");
         printf("*Atualizando quantidade do produto %s (ID %d).", novoProduto.nome, novoProduto.id);
@@ -60,15 +60,7 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
         printf("Nome do produto: ");
         getchar();
         fgets(novoProduto.nome, sizeof(novoProduto.nome), stdin);
-        novoProduto.nome[strcspn(novoProduto.nome, "\n")] = 0;
-
-        printf("Preco do produto por Kg: ");
-        if (scanf("%f", &novoProduto.preco) != 1) {
-            printf("\n-----------------------------------------------------------\n");
-            printf("*Entrada invalida para preco!");
-            printf("\n-----------------------------------------------------------\n");
-            return;
-        }
+        novoProduto.nome[strcspn(novoProduto.nome, "\n")] = 0; //Apaga a quebra de linha lida pelo fgets
     }
 
     printf("Quantidade no estoque (Kg): ");
@@ -81,9 +73,6 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
 
     if (modoAtualizacao == 1) {
         produtos[idProdutoAtualizar].quantidade += novoProduto.quantidade;
-    } else {
-        produtos[*contador] = novoProduto;
-        (*contador)++;
     }
 
     printf("\n-----------------------------------------------------------\n");
@@ -93,7 +82,7 @@ void cadastrarProduto(struct Produto produtos[], int *contador, int modoAtualiza
 }
 
 // Função para listar todos os produtos
-void listarProdutos(struct Produto produtos[], int contador) {
+void listarProdutos(struct Produto produtos[], int contador) { // Se o contador for igual a zero ele exibe que nenhum produto foi cadastrado
     limparTela();
     if (contador == 0) {
         printf("\n-----------------------------------------------------------\n");
@@ -102,7 +91,7 @@ void listarProdutos(struct Produto produtos[], int contador) {
         return;
     }
 
-    printf("Lista de produtos cadastrados:\n");
+    printf("Lista de produtos cadastrados:\n"); //Utiliza um laço for
     for (int i = 0; i < contador; i++) {
         printf("\n-------------------------------------------------------------------------------\n");
         printf("ID: %d | Nome: %s | Preco por Kg: R$ %.2f | Quantidade: %.2f Kg", produtos[i].id, produtos[i].nome, produtos[i].preco, produtos[i].quantidade);

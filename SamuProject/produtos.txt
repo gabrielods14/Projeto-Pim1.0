@@ -1,0 +1,6 @@
+ID:1 | Nome:Laranja | Preco por Kg: R$5.00 | Quantidade: 49.00 Kg
+ID:2 | Nome:Limao | Preco por Kg: R$5.00 | Quantidade: 10.00 Kg
+ID:3 | Nome:Banana | Preco por Kg: R$5.00 | Quantidade: 20.00 Kg
+ID:4 | Nome:Melao | Preco por Kg: R$5.00 | Quantidade: 50.00 Kg
+ID:5 | Nome:Maca | Preco por Kg: R$5.00 | Quantidade: 50.00 Kg
+ID:6 | Nome:Pera | Preco por Kg: R$5.00 | Quantidade: 35.00 Kg

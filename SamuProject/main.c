@@ -6,7 +6,7 @@
 #include "Cab_FinalizarD.h" // Cabecalho de funcoes de venda de produtos e finalizacao de dias
 
 
-int main()
+int main() //Validação do usuário
 {
     char nomeUsuario[50];
     carregarContadorDias();
@@ -20,7 +20,7 @@ int main()
         return 0; // Encerra o programa se o login falhar
     }
 
-    int permissao = verificarPermissao(nomeUsuario);
+    int permissao = verificarPermissao(nomeUsuario); //Verifica a permissão
     if (permissao == -1) {
         printf("\n-----------------------------------------------------------\n");
         printf("*Erro ao abrir o arquivo. Encerrando o programa.");
@@ -76,7 +76,7 @@ int main()
                 break;
             case 3:
                 if (permissao == 1) {
-                    listarProdutos(produtos, contador);
+                    listarProdutos(produtos, contador); //Chama a função para listar produtos
                 } else {
                     finalizarDia(); // Chama a funcao de finalizar o dia
                 }
